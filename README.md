@@ -1,5 +1,5 @@
 # Fish-in-the-C
-Scripts for an interactive aquarium made with Unity.
+Scripts for an interactive aquarium made with Unity. (Work in Progress)
 All scripts above were either completely or mostly written by me.
 
 Some detailed implementation information:
