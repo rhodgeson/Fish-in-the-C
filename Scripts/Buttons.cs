@@ -5,26 +5,47 @@ using UnityEngine.UI;
 
 public class Buttons : MonoBehaviour
 {
-    FoodSpawner feed;
-    public GameObject collectedFish;
-    int fishBtnCounter;
 
-    Collections c;
-    Button plant, shortD, tallD;
+    public GameObject collectedFish;
+    GameObject fishNote, dayLightsParent, nightLightsParent, dayLights, nightLights;
+    Button fishNoteBtn;
+    int fishBtnCounter, fishNoteBtnCounter, lightBtnCounter;
+    private FoodSpawn fs;
+    private Collections coll;
+    Button plant, shortD, tallD, sand;
     private bool editing = false;
     void Start()
     {
-        feed = GameObject.Find("FoodSpawner").GetComponent<FoodSpawner>();
-        c = GameObject.Find("GameController").GetComponent<Collections>();
         plant = GameObject.Find("Plant").GetComponent<Button>();
         shortD = GameObject.Find("ShortDecor").GetComponent<Button>();
         tallD = GameObject.Find("TallDecor").GetComponent<Button>();
+        sand = GameObject.Find("Sand").GetComponent<Button>();
+        coll = GameObject.Find("GameController").GetComponent<Collections>();
+        fs = GameObject.Find("FoodSpawner").GetComponent<FoodSpawn>();
+        fishNote = GameObject.Find("FishUpdateNote");
+        fishNoteBtn = fishNote.GetComponentInChildren<Button>();
+        //dayLightsParent = GameObject.Find("Daylight");
+        // dayLights = dayLightsParent.transform.Find("Lights").gameObject;
+        // nightLightsParent = GameObject.Find("Nightlight");
+        // nightLights = nightLightsParent.transform.Find("Lights").gameObject;
+        plant.enabled = false;
+        shortD.enabled = false;
+        tallD.enabled = false;
+        sand.enabled = false;
+
     }
 
-    public void onFoodPress()
+    public void onFoodPress() //Leslyanne
     {
-        Debug.Log("food!");
-        StartCoroutine(feed.SpawnFood(1f));
+        FoodSpawn fs = GameObject.Find("FoodSpawner").GetComponent<FoodSpawn>();
+        if (!fs.feeding)
+        {
+            fs.feeding = true;
+        }
+        else
+        {
+            fs.feeding = false;
+        }
     }
 
     public void onFishPress()
@@ -54,11 +75,31 @@ public class Buttons : MonoBehaviour
 
     public void onLightPress()
     {
+        dayLightsParent = GameObject.Find("Daylight");
+        dayLights = dayLightsParent.transform.Find("Lights").gameObject;
+
+        nightLightsParent = GameObject.Find("Nightlight");
+        nightLights = nightLightsParent.transform.Find("Lights").gameObject;
+
+        lightBtnCounter++;
+        if (lightBtnCounter % 2 == 1)
+        {
+            nightLights.gameObject.SetActive(false);
+            dayLights.gameObject.SetActive(true);
+
+        }
+        else
+        {
+            dayLights.gameObject.SetActive(false);
+            nightLights.gameObject.SetActive(true);
+        }
+
         Debug.Log("set the mood!");
     }
 
     public void onEditPress()
     {
+
         Debug.Log("editing");
         if (!editing)
         {
@@ -66,6 +107,7 @@ public class Buttons : MonoBehaviour
             plant.enabled = true;
             shortD.enabled = true;
             tallD.enabled = true;
+            sand.enabled = true;
         }
         else
         {
@@ -73,21 +115,39 @@ public class Buttons : MonoBehaviour
             plant.enabled = false;
             shortD.enabled = false;
             tallD.enabled = false;
+            sand.enabled = false;
         }
     }
 
     public void onShortDecPress()
     {
-        c.changeShortDec();
+        Collections coll = GameObject.Find("GameController").GetComponent<Collections>();
+        coll.changeShortDec();
     }
 
     public void onTallDecPress()
     {
-        c.changeTallDec();
+        Collections coll = GameObject.Find("GameController").GetComponent<Collections>();
+        coll.changeTallDec();
     }
 
     public void onPlantPress()
     {
-        c.changePlant();
+        Collections coll = GameObject.Find("GameController").GetComponent<Collections>();
+        coll.changePlant();
+    }
+
+    public void onSandPress()
+    {
+        Collections coll = GameObject.Find("GameController").GetComponent<Collections>();
+        coll.changeSand();
+    }
+
+    public void onOkayBtnPressed()
+    {
+        //fishNoteBtnCounter++;        
+
+        fishNote.gameObject.SetActive(false);
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 //class keeps track of what is within the tank (can be used for saving purposes)
 //tracks&changes plant decor
@@ -9,7 +10,7 @@ using System;
 [System.Serializable]
 public class Collections : MonoBehaviour
 {
-    private int shortDec, tallDec, plant; // to be saved
+    public int shortDec, tallDec, plant, sand; // to be saved
     //maps type of fish to a list
     //length of list = how many fish of that type are present
     //each DateTime in the list is the lastTimeFed of the fish of that type
@@ -19,24 +20,30 @@ public class Collections : MonoBehaviour
         {"sturg", new List<DateTime>()},
         {"damsel", new List<DateTime>()},
         {"angel", new List<DateTime>()},
-        {"card", new List<DateTime>()},
-        {"wrass", new List<DateTime>()},
         {"axol", new List<DateTime>()},
-        {"star", new List<DateTime>()},
-        {"horse", new List<DateTime>()}
+        {"star", new List<DateTime>()}
     }; //to be saved
 
 
-    private SpriteRenderer sprShort, sprTall, sprPlant;
+    private SpriteRenderer sprShort, sprTall, sprPlant, sprSand;
     public Sprite[] shortD;
     public Sprite[] tallD;
     public Sprite[] plants;
 
+    public Sprite[] sands;
+
     void Start()
     {
-        GameObject.Find("ShortDecor").GetComponent<SpriteRenderer>();
-        GameObject.Find("TallDecor").GetComponent<SpriteRenderer>();
-        GameObject.Find("Plant").GetComponent<SpriteRenderer>();
+        sprShort = GameObject.Find("ShortSprite").GetComponent<SpriteRenderer>();
+        sprTall = GameObject.Find("TallSprite").GetComponent<SpriteRenderer>();
+        sprPlant = GameObject.Find("PlantSprite").GetComponent<SpriteRenderer>();
+        sprSand = GameObject.Find("SandBottom").GetComponent<SpriteRenderer>();
+
+        sprShort.sprite = shortD[shortDec];
+        sprTall.sprite = tallD[tallDec];
+        sprPlant.sprite = plants[plant];
+        sprSand.sprite = sands[sand];
+
     }
     //adds fish of type fishName and sets its lastTimeFed to now
     public void addFish(string fishName)
@@ -76,6 +83,11 @@ public class Collections : MonoBehaviour
             shortDec += 1;
             sprShort.sprite = shortD[shortDec];
         }
+        else
+        {
+            shortDec = 0;
+            sprShort.sprite = shortD[shortDec];
+        }
     }
 
     public void changeTallDec()
@@ -84,6 +96,11 @@ public class Collections : MonoBehaviour
         if (tallDec + 1 < tallD.Length)
         {
             tallDec += 1;
+            sprTall.sprite = tallD[tallDec];
+        }
+        else
+        {
+            tallDec = 0;
             sprTall.sprite = tallD[tallDec];
         }
     }
@@ -95,6 +112,26 @@ public class Collections : MonoBehaviour
         {
             plant += 1;
             sprPlant.sprite = plants[plant];
+        }
+        else
+        {
+            plant = 0;
+            sprPlant.sprite = plants[plant];
+        }
+    }
+
+    public void changeSand()
+    {
+        //switch to next sprite
+        if (sand + 1 < sands.Length)
+        {
+            sand += 1;
+            sprSand.sprite = sands[sand];
+        }
+        else
+        {
+            sand = 0;
+            sprSand.sprite = sands[sand];
         }
     }
 
